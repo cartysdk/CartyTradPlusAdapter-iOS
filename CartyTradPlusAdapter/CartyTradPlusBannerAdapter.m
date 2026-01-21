@@ -1,9 +1,3 @@
-//
-//  CartyTradPlusBannerAdapter.m
-//  CartyTradPlus
-//
-//  Created by GZTD-03-01959 on 2026/1/12.
-//
 
 #import "CartyTradPlusBannerAdapter.h"
 
@@ -20,7 +14,6 @@
     NSString *pid = item.config[@"pid"];
     if(appid == nil || pid == nil)
     {
-        //配置错误
         [self AdConfigError];
         return;
     }

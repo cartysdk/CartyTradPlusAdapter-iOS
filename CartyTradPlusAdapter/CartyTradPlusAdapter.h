@@ -1,9 +1,3 @@
-//
-//  CartyTradPlusAdapter.h
-//  CartyTradPlus
-//
-//  Created by GZTD-03-01959 on 2026/1/12.
-//
 
 #import <Foundation/Foundation.h>
 #import <CartySDK/CartySDK.h>
