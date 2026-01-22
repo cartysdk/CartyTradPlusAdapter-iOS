@@ -33,6 +33,7 @@
         {
             [[CartyADSDK sharedInstance] setLGPDStatus:(lgpd == 2)];
         }
+        [CartyADSDK sharedInstance].mediation = @"TradPlus";
         [[CartyADSDK sharedInstance] start:appid completion:^{
             
         }];
