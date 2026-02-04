@@ -27,14 +27,17 @@
         if([bannerSize isEqualToString:@"320x50"])
         {
             self.bannerAd.bannerSize = CTBannerSizeType320x50;
+            self.bannerAd.frame = CGRectMake(0, 0, 320, 50);
         }
         else if([bannerSize isEqualToString:@"320x100"])
         {
             self.bannerAd.bannerSize = CTBannerSizeType320x100;
+            self.bannerAd.frame = CGRectMake(0, 0, 320, 100);
         }
         else if([bannerSize isEqualToString:@"300x250"])
         {
             self.bannerAd.bannerSize = CTBannerSizeType300x250;
+            self.bannerAd.frame = CGRectMake(0, 0, 300, 250);
         }
     }
     NSDictionary *localParams= item.extraInfoDictionary[@"localParams"];
@@ -52,14 +55,17 @@
                 if([bannerSize isEqualToString:@"320x50"])
                 {
                     self.bannerAd.bannerSize = CTBannerSizeType320x50;
+                    self.bannerAd.frame = CGRectMake(0, 0, 320, 50);
                 }
                 else if([bannerSize isEqualToString:@"320x100"])
                 {
                     self.bannerAd.bannerSize = CTBannerSizeType320x100;
+                    self.bannerAd.frame = CGRectMake(0, 0, 320, 100);
                 }
                 else if([bannerSize isEqualToString:@"300x250"])
                 {
                     self.bannerAd.bannerSize = CTBannerSizeType300x250;
+                    self.bannerAd.frame = CGRectMake(0, 0, 300, 250);
                 }
             }
         }
