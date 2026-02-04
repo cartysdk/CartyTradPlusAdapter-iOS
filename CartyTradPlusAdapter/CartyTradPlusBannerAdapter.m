@@ -46,7 +46,7 @@
         }
         if([localParams valueForKey:@"Carty_BannerSize"])
         {
-            NSString *bannerSize = item.config[@"Carty_BannerSize"];
+            NSString *bannerSize = localParams[@"Carty_BannerSize"];
             if([bannerSize isEqualToString:@"320x50"])
             {
                 self.bannerAd.bannerSize = CTBannerSizeType320x50;
