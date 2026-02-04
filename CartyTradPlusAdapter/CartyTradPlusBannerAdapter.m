@@ -21,6 +21,22 @@
     self.bannerAd = [[CTBannerAd alloc] init];
     self.bannerAd.placementid = pid;
     self.bannerAd.delegate = self;
+    NSString *bannerSize = item.config[@"bannerSize"];
+    if([bannerSize isKindOfClass:[NSString class]])
+    {
+        if([bannerSize isEqualToString:@"320x50"])
+        {
+            self.bannerAd.bannerSize = CTBannerSizeType320x50;
+        }
+        else if([bannerSize isEqualToString:@"320x100"])
+        {
+            self.bannerAd.bannerSize = CTBannerSizeType320x100;
+        }
+        else if([bannerSize isEqualToString:@"300x250"])
+        {
+            self.bannerAd.bannerSize = CTBannerSizeType300x250;
+        }
+    }
     NSDictionary *localParams= item.extraInfoDictionary[@"localParams"];
     if(localParams)
     {
@@ -30,7 +46,19 @@
         }
         if([localParams valueForKey:@"Carty_BannerSize"])
         {
-            self.bannerAd.bannerSize = [localParams[@"Carty_BannerSize"] integerValue];
+            NSString *bannerSize = item.config[@"Carty_BannerSize"];
+            if([bannerSize isEqualToString:@"320x50"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType320x50;
+            }
+            else if([bannerSize isEqualToString:@"320x100"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType320x100;
+            }
+            else if([bannerSize isEqualToString:@"300x250"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType300x250;
+            }
         }
     }
     [self.bannerAd loadAd];
