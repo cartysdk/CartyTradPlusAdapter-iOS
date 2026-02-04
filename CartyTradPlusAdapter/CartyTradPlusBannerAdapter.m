@@ -47,17 +47,20 @@
         if([localParams valueForKey:@"Carty_BannerSize"])
         {
             NSString *bannerSize = localParams[@"Carty_BannerSize"];
-            if([bannerSize isEqualToString:@"320x50"])
+            if([bannerSize isKindOfClass:[NSString class]])
             {
-                self.bannerAd.bannerSize = CTBannerSizeType320x50;
-            }
-            else if([bannerSize isEqualToString:@"320x100"])
-            {
-                self.bannerAd.bannerSize = CTBannerSizeType320x100;
-            }
-            else if([bannerSize isEqualToString:@"300x250"])
-            {
-                self.bannerAd.bannerSize = CTBannerSizeType300x250;
+                if([bannerSize isEqualToString:@"320x50"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType320x50;
+                }
+                else if([bannerSize isEqualToString:@"320x100"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType320x100;
+                }
+                else if([bannerSize isEqualToString:@"300x250"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType300x250;
+                }
             }
         }
     }
