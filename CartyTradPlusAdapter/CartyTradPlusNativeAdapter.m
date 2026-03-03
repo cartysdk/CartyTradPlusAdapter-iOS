@@ -41,20 +41,33 @@
     return nil;
 }
 
+- (void)templateRender:(UIView *)subView
+{
+    self.nativeAd.templateView.frame = subView.bounds;
+    [self.nativeAd registerContainer:self.nativeAd.templateView withClickableViews:nil];
+}
+
 - (void)CTNativeAdDidLoad:(nonnull CTNativeAd *)ad
 {
     TradPlusAdRes *res = [[TradPlusAdRes alloc] init];
-    res.title = self.nativeAd.title;
-    res.body = self.nativeAd.desc;
-    res.ctaText = self.nativeAd.ctaText;
-    res.mediaView = self.nativeAd.mediaView;
-    res.iconImageURL = self.nativeAd.iconImageURL;
-    res.adChoiceView = self.nativeAd.adChoiceView;
-    res.sponsored = self.nativeAd.sponsored;
-    res.likes = self.nativeAd.likes;
-    if(self.nativeAd.rating != nil)
+    if(self.nativeAd.isTemplate)
     {
-        res.rating = @([self.nativeAd.rating floatValue]);
+        res.adView = self.nativeAd.templateView;
+    }
+    else
+    {
+        res.title = self.nativeAd.title;
+        res.body = self.nativeAd.desc;
+        res.ctaText = self.nativeAd.ctaText;
+        res.mediaView = self.nativeAd.mediaView;
+        res.iconImageURL = self.nativeAd.iconImageURL;
+        res.adChoiceView = self.nativeAd.adChoiceView;
+        res.sponsored = self.nativeAd.sponsored;
+        res.likes = self.nativeAd.likes;
+        if(self.nativeAd.rating != nil)
+        {
+            res.rating = @([self.nativeAd.rating floatValue]);
+        }
     }
     self.waterfallItem.adRes = res;
     [self AdLoadFinsh];
