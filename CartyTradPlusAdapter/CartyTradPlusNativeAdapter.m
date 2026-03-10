@@ -4,9 +4,36 @@
 @interface CartyTradPlusNativeAdapter()<CTNativeAdDelegate>
 
 @property (nonatomic,strong)CTNativeAd *nativeAd;
+@property (nonatomic, assign) BOOL isC2SBidding;
 @end
 
 @implementation CartyTradPlusNativeAdapter
+
+- (BOOL)extraActWithEvent:(NSString *)event info:(NSDictionary *)config
+{
+    if([event isEqualToString:@"C2SBidding"])
+    {
+        self.isC2SBidding = YES;
+        [self loadAdWithWaterfallItem:self.waterfallItem];
+    }
+    else if([event isEqualToString:@"LoadAdC2SBidding"])
+    {
+        if([self isReady])
+        {
+            [self nativeAdLoadFinish];
+        }
+        else
+        {
+            NSError *loadError = [NSError errorWithDomain:@"ct" code:402 userInfo:@{NSLocalizedDescriptionKey : @"C2S native not ready"}];
+            [self AdLoadFailWithError:loadError];
+        }
+    }
+    else
+    {
+        return NO;
+    }
+    return YES;
+}
 
 - (void)loadAdWithWaterfallItem:(TradPlusAdWaterfallItem *)item
 {
@@ -47,7 +74,7 @@
     [self.nativeAd registerContainer:self.nativeAd.templateView withClickableViews:nil];
 }
 
-- (void)CTNativeAdDidLoad:(nonnull CTNativeAd *)ad
+- (void)nativeAdLoadFinish
 {
     TradPlusAdRes *res = [[TradPlusAdRes alloc] init];
     if(self.nativeAd.isTemplate)
@@ -73,9 +100,32 @@
     [self AdLoadFinsh];
 }
 
+- (void)CTNativeAdDidLoad:(nonnull CTNativeAd *)ad
+{
+    if(self.isC2SBidding)
+    {
+        NSString *ecpmStr = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        NSDictionary *dic = @{@"ecpm":ecpmStr,@"version":[CartyADSDK sdkVersion]};
+        [self ADLoadExtraCallbackWithEvent:@"C2SBiddingFinish" info:dic];
+    }
+    else
+    {
+        [self nativeAdLoadFinish];
+    }
+}
+
 - (void)CTNativeAdLoadFail:(nonnull CTNativeAd *)ad withError:(nonnull NSError *)error
 {
-    [self AdLoadFailWithError:error];
+    if(self.isC2SBidding)
+    {
+        NSString *errorStr = [NSString stringWithFormat:@"errCode: %@, errMsg: %@", @(error.code), error.localizedDescription];
+        NSDictionary *dic = @{@"error":errorStr};
+        [self ADLoadExtraCallbackWithEvent:@"C2SBiddingFail" info:dic];
+    }
+    else
+    {
+        [self AdLoadFailWithError:error];
+    }
 }
 
 - (void)CTNativeAdDidShow:(nonnull CTNativeAd *)ad

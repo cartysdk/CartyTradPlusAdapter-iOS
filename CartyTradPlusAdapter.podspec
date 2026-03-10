@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "CartyTradPlusAdapter"
-  spec.version      = "1.1.0"
+  spec.version      = "1.2.0"
   spec.summary      = "CartyTradPlusAdapter"
   spec.description  = <<-DESC
              CartyTradPlusAdapter for iOS. 
@@ -17,6 +17,6 @@ Pod::Spec.new do |spec|
   spec.source_files = 'CartyTradPlusAdapter/*.{h,m}'
   spec.static_framework = true
 
-  spec.dependency 'CartySDK','>= 1.0.0'
+  spec.dependency 'CartySDK','>= 1.1.0'
   spec.dependency 'TradPlusAdSDK'
 end

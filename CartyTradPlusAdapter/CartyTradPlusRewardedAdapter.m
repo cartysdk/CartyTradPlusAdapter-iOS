@@ -4,9 +4,36 @@
 @interface CartyTradPlusRewardedAdapter()<CTRewardedVideoAdDelegate>
 
 @property (nonatomic,strong)CTRewardedVideoAd *rewardedVideoAd;
+@property (nonatomic, assign) BOOL isC2SBidding;
 @end
 
 @implementation CartyTradPlusRewardedAdapter
+
+- (BOOL)extraActWithEvent:(NSString *)event info:(NSDictionary *)config
+{
+    if([event isEqualToString:@"C2SBidding"])
+    {
+        self.isC2SBidding = YES;
+        [self loadAdWithWaterfallItem:self.waterfallItem];
+    }
+    else if([event isEqualToString:@"LoadAdC2SBidding"])
+    {
+        if([self isReady])
+        {
+            [self AdLoadFinsh];
+        }
+        else
+        {
+            NSError *loadError = [NSError errorWithDomain:@"ct" code:402 userInfo:@{NSLocalizedDescriptionKey : @"C2S rewarded not ready"}];
+            [self AdLoadFailWithError:loadError];
+        }
+    }
+    else
+    {
+        return NO;
+    }
+    return YES;
+}
 
 - (void)loadAdWithWaterfallItem:(TradPlusAdWaterfallItem *)item
 {
@@ -49,13 +76,31 @@
 
 - (void)CTRewardedVideoAdDidLoad:(nonnull CTRewardedVideoAd *)ad
 {
-    [self AdLoadFinsh];
+    if(self.isC2SBidding)
+    {
+        NSString *ecpmStr = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        NSDictionary *dic = @{@"ecpm":ecpmStr,@"version":[CartyADSDK sdkVersion]};
+        [self ADLoadExtraCallbackWithEvent:@"C2SBiddingFinish" info:dic];
+    }
+    else
+    {
+        [self AdLoadFinsh];
+    }
 }
 
 
 - (void)CTRewardedVideoAdLoadFail:(nonnull CTRewardedVideoAd *)ad withError:(nonnull NSError *)error
 {
-    [self AdLoadFailWithError:error];
+    if(self.isC2SBidding)
+    {
+        NSString *errorStr = [NSString stringWithFormat:@"errCode: %@, errMsg: %@", @(error.code), error.localizedDescription];
+        NSDictionary *dic = @{@"error":errorStr};
+        [self ADLoadExtraCallbackWithEvent:@"C2SBiddingFail" info:dic];
+    }
+    else
+    {
+        [self AdLoadFailWithError:error];
+    }
 }
 
 - (void)CTRewardedVideoAdDidShow:(nonnull CTRewardedVideoAd *)ad
