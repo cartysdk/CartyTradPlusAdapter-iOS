@@ -5,6 +5,7 @@
 
 @property (nonatomic,strong)CTBannerAd *bannerAd;
 @property (nonatomic, assign) BOOL isC2SBidding;
+@property (nonatomic, assign) BOOL didWin;
 @end
 
 @implementation CartyTradPlusBannerAdapter
@@ -28,11 +29,25 @@
             [self AdLoadFailWithError:loadError];
         }
     }
+    else if([event isEqualToString:@"C2SLoss"])
+    {
+        [self sendC2SLoss:config];
+    }
     else
     {
         return NO;
     }
     return YES;
+}
+
+- (void)sendC2SLoss:(NSDictionary *)config
+{
+    if(self.didWin)
+    {
+        return;
+    }
+    NSString *topPirce = config[@"topPirce"];
+    [self.bannerAd bidLoss:topPirce];
 }
 
 - (void)loadAdWithWaterfallItem:(TradPlusAdWaterfallItem *)item
@@ -152,6 +167,11 @@
 
 - (void)CTBannerAdDidShow:(nonnull CTBannerAd *)ad
 {
+    if(self.isC2SBidding)
+    {
+        self.didWin = YES;
+        [ad bidWin:self.waterfallItem.secondPirce];
+    }
     [self AdShow];
 }
 
